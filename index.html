@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aman Sharma — MERN Stack Developer</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #060a12;
+  --surface: #0d1520;
+  --surface2: #111c2e;
+  --accent: #00d4ff;
+  --accent2: #7c3aed;
+  --accent3: #f59e0b;
+  --text: #e2e8f0;
+  --muted: #64748b;
+  --border: rgba(0,212,255,0.15);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;overflow-x:hidden;cursor:none;}
+
+/* CURSOR */
+.cursor{width:8px;height:8px;background:var(--accent);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9999;transition:transform 0.1s;mix-blend-mode:difference;}
+.cursor-ring{width:32px;height:32px;border:1px solid var(--accent);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9998;transition:all 0.15s ease;opacity:0.5;}
+
+/* NOISE */
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:0.4;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:20px 60px;display:flex;justify-content:space-between;align-items:center;background:rgba(6,10,18,0.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
+.nav-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:22px;color:var(--accent);letter-spacing:-0.5px;}
+.nav-links{display:flex;gap:36px;list-style:none;}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:13px;font-weight:500;letter-spacing:0.5px;text-transform:uppercase;transition:color 0.3s;position:relative;}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--accent);transition:width 0.3s;}
+.nav-links a:hover{color:var(--accent);}
+.nav-links a:hover::after{width:100%;}
+
+/* HERO */
+.hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;align-items:center;padding:120px 60px 80px;position:relative;overflow:hidden;}
+.hero-bg-lines{position:absolute;inset:0;background:linear-gradient(rgba(0,212,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,0.03) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;}
+.hero-glow{position:absolute;width:600px;height:600px;background:radial-gradient(circle,rgba(0,212,255,0.08) 0%,transparent 70%);top:-100px;right:-100px;pointer-events:none;}
+.hero-glow2{position:absolute;width:400px;height:400px;background:radial-gradient(circle,rgba(124,58,237,0.07) 0%,transparent 70%);bottom:-50px;left:100px;pointer-events:none;}
+.hero-left{position:relative;z-index:1;}
+.hero-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(0,212,255,0.08);border:1px solid var(--border);border-radius:100px;padding:6px 16px;font-size:12px;color:var(--accent);letter-spacing:1px;text-transform:uppercase;margin-bottom:24px;animation:fadeUp 0.6s ease both;}
+.hero-tag::before{content:'';width:6px;height:6px;background:var(--accent);border-radius:50%;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.5;transform:scale(1.5);}}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(48px,6vw,84px);font-weight:800;line-height:1.0;letter-spacing:-2px;margin-bottom:8px;animation:fadeUp 0.6s 0.1s ease both;}
+.hero h1 .name-outline{-webkit-text-stroke:2px var(--accent);color:transparent;}
+.hero-role{font-family:'Syne',sans-serif;font-size:clamp(18px,2.2vw,28px);font-weight:600;color:var(--accent);margin-bottom:20px;animation:fadeUp 0.6s 0.2s ease both;}
+.hero-desc{font-size:15px;color:var(--muted);line-height:1.8;max-width:480px;margin-bottom:40px;font-weight:300;animation:fadeUp 0.6s 0.3s ease both;}
+.hero-cta{display:flex;gap:16px;flex-wrap:wrap;animation:fadeUp 0.6s 0.4s ease both;}
+.btn-primary{display:inline-flex;align-items:center;gap:8px;padding:14px 32px;background:var(--accent);color:#000;font-weight:700;font-size:13px;text-decoration:none;border-radius:3px;transition:all 0.3s;letter-spacing:0.5px;font-family:'Syne',sans-serif;}
+.btn-primary:hover{background:#fff;transform:translateY(-2px);box-shadow:0 20px 40px rgba(0,212,255,0.3);}
+.btn-outline{display:inline-flex;align-items:center;gap:8px;padding:14px 32px;border:1px solid var(--border);color:var(--text);font-weight:500;font-size:13px;text-decoration:none;border-radius:3px;transition:all 0.3s;}
+.btn-outline:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-2px);}
+.hero-stats{display:flex;gap:40px;margin-top:50px;animation:fadeUp 0.6s 0.5s ease both;}
+.stat-num{font-family:'Syne',sans-serif;font-size:32px;font-weight:800;color:var(--accent);display:block;}
+.stat-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;}
+
+/* HERO PHOTO */
+.hero-right{position:relative;z-index:1;display:flex;justify-content:center;align-items:center;animation:fadeIn 1s 0.3s ease both;}
+.photo-frame{position:relative;width:380px;height:500px;}
+.photo-frame img{width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:2px;filter:grayscale(15%) contrast(1.05);}
+.photo-frame::before{content:'';position:absolute;inset:-2px;background:linear-gradient(135deg,var(--accent),transparent 50%,var(--accent2));border-radius:4px;z-index:-1;}
+.photo-frame::after{content:'WISSEN INFOTECH • HYD';position:absolute;bottom:20px;left:-20px;background:var(--surface2);border:1px solid var(--border);padding:8px 14px;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);}
+.photo-badge{position:absolute;top:-20px;right:-20px;background:var(--accent3);color:#000;width:80px;height:80px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:11px;line-height:1.3;text-align:center;text-transform:uppercase;letter-spacing:0.5px;animation:spin 20s linear infinite;}
+@keyframes spin{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+
+/* SECTIONS */
+section{padding:100px 60px;position:relative;}
+.section-label{display:inline-flex;align-items:center;gap:12px;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:16px;}
+.section-label::before{content:'';width:30px;height:1px;background:var(--accent);}
+.section-title{font-family:'Syne',sans-serif;font-size:clamp(36px,4vw,56px);font-weight:800;line-height:1.1;letter-spacing:-1.5px;margin-bottom:60px;}
+
+/* ABOUT */
+.about{background:var(--surface);}
+.about-grid{display:grid;grid-template-columns:1fr 1.5fr;gap:80px;align-items:center;}
+.about-img-wrap{position:relative;}
+.about-img{width:100%;border-radius:2px;filter:grayscale(25%);}
+.about-img-wrap::after{content:'';position:absolute;bottom:-16px;right:-16px;width:100%;height:100%;border:1px solid var(--border);border-radius:2px;z-index:-1;}
+.about-text{font-size:15px;color:var(--muted);line-height:1.8;margin-bottom:24px;font-weight:300;}
+.internship-card{margin-top:28px;padding:24px;background:var(--bg);border:1px solid var(--border);border-radius:4px;border-left:3px solid var(--accent);}
+.internship-card h4{font-family:'Syne',sans-serif;font-size:17px;font-weight:700;color:var(--accent);margin-bottom:4px;}
+.internship-card .company{font-size:12px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;}
+.internship-card p{font-size:13px;color:var(--muted);line-height:1.6;}
+.skills-grid{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px;}
+.skill-tag{padding:6px 14px;background:rgba(0,212,255,0.07);border:1px solid var(--border);border-radius:2px;font-size:12px;color:var(--text);transition:all 0.3s;}
+.skill-tag:hover{background:rgba(0,212,255,0.15);border-color:var(--accent);color:var(--accent);}
+
+/* CODING PROFILES */
+.coding{background:var(--bg);}
+.coding-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+.coding-card{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:36px 28px;text-align:center;transition:all 0.4s;position:relative;overflow:hidden;text-decoration:none;display:block;}
+.coding-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent2));transform:scaleX(0);transform-origin:left;transition:transform 0.4s;}
+.coding-card:hover{border-color:var(--accent);transform:translateY(-8px);box-shadow:0 20px 40px rgba(0,212,255,0.1);}
+.coding-card:hover::before{transform:scaleX(1);}
+.coding-logo{font-size:42px;margin-bottom:16px;display:block;}
+.coding-platform{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;color:var(--text);margin-bottom:8px;}
+.coding-handle{font-size:13px;color:var(--accent);margin-bottom:16px;letter-spacing:0.5px;}
+.coding-stat{display:inline-block;background:rgba(0,212,255,0.08);border:1px solid var(--border);border-radius:100px;padding:6px 16px;font-size:12px;color:var(--muted);}
+.coding-stat strong{color:var(--text);}
+.coding-arrow{display:block;margin-top:20px;font-size:18px;color:var(--muted);transition:all 0.3s;}
+.coding-card:hover .coding-arrow{color:var(--accent);transform:translateX(4px);}
+
+/* PROJECTS */
+.projects{background:var(--surface);}
+.projects-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:2px;background:var(--border);border:1px solid var(--border);}
+.project-card{background:var(--bg);padding:48px 40px;transition:all 0.4s;position:relative;overflow:hidden;}
+.project-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent2));transform:scaleX(0);transform-origin:left;transition:transform 0.4s;}
+.project-card:hover{background:var(--surface);}
+.project-card:hover::before{transform:scaleX(1);}
+.project-num{font-family:'Syne',sans-serif;font-size:72px;font-weight:800;color:rgba(0,212,255,0.05);position:absolute;top:20px;right:24px;line-height:1;transition:color 0.4s;}
+.project-card:hover .project-num{color:rgba(0,212,255,0.1);}
+.project-icon{width:48px;height:48px;background:rgba(0,212,255,0.08);border:1px solid var(--border);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:20px;transition:all 0.3s;}
+.project-card:hover .project-icon{background:rgba(0,212,255,0.15);border-color:var(--accent);}
+.project-status{display:inline-block;padding:3px 10px;border-radius:100px;font-size:10px;letter-spacing:1px;text-transform:uppercase;margin-bottom:14px;}
+.status-live{background:rgba(0,255,128,0.1);color:#00ff80;border:1px solid rgba(0,255,128,0.2);}
+.status-progress{background:rgba(245,158,11,0.1);color:var(--accent3);border:1px solid rgba(245,158,11,0.2);}
+.project-title{font-family:'Syne',sans-serif;font-size:22px;font-weight:700;margin-bottom:12px;letter-spacing:-0.5px;}
+.project-desc{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:20px;font-weight:300;}
+.project-tech{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px;}
+.tech-pill{padding:4px 10px;background:var(--surface2);border-radius:2px;font-size:11px;color:var(--muted);letter-spacing:0.5px;}
+.project-links{display:flex;gap:16px;}
+.project-link{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--accent);text-decoration:none;font-weight:500;letter-spacing:0.5px;transition:gap 0.3s;border:1px solid var(--border);padding:6px 14px;border-radius:2px;}
+.project-link:hover{gap:10px;border-color:var(--accent);}
+
+/* ACHIEVEMENTS */
+.achievements{background:var(--bg);}
+.achieve-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--border);border:1px solid var(--border);}
+.achieve-item{background:var(--surface);padding:40px;text-align:center;transition:background 0.3s;}
+.achieve-item:hover{background:var(--surface2);}
+.achieve-icon{font-size:32px;margin-bottom:16px;}
+.achieve-num{font-family:'Syne',sans-serif;font-size:48px;font-weight:800;color:var(--accent);display:block;margin-bottom:8px;}
+.achieve-title{font-size:14px;color:var(--text);font-weight:500;margin-bottom:6px;}
+.achieve-desc{font-size:12px;color:var(--muted);}
+
+/* EDUCATION */
+.education{background:var(--surface);}
+.edu-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;}
+.edu-card{background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:32px;border-left:3px solid var(--accent2);transition:all 0.3s;}
+.edu-card:hover{border-left-color:var(--accent);transform:translateX(4px);}
+.edu-year{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+.edu-degree{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:var(--text);margin-bottom:4px;}
+.edu-school{font-size:13px;color:var(--accent);margin-bottom:8px;}
+.edu-grade{display:inline-block;background:rgba(0,212,255,0.08);border:1px solid var(--border);padding:4px 12px;border-radius:100px;font-size:12px;color:var(--muted);}
+
+/* CONTACT */
+.contact{background:var(--bg);}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;}
+.contact-info h3{font-family:'Syne',sans-serif;font-size:30px;font-weight:700;letter-spacing:-1px;margin-bottom:16px;line-height:1.2;}
+.contact-info p{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:36px;font-weight:300;}
+.contact-links{display:flex;flex-direction:column;gap:12px;}
+.contact-link{display:flex;align-items:center;gap:16px;text-decoration:none;color:var(--text);padding:14px 18px;background:var(--surface);border:1px solid var(--border);border-radius:4px;transition:all 0.3s;font-size:13px;}
+.contact-link:hover{border-color:var(--accent);color:var(--accent);transform:translateX(8px);}
+.contact-link .link-icon{font-size:18px;width:24px;text-align:center;}
+.form-group{margin-bottom:18px;}
+.form-group label{display:block;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+.form-group input,.form-group textarea{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:13px 15px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;transition:border-color 0.3s;outline:none;}
+.form-group input:focus,.form-group textarea:focus{border-color:var(--accent);}
+.form-group textarea{height:110px;resize:vertical;}
+.btn-submit{width:100%;padding:15px;background:var(--accent);color:#000;border:none;border-radius:3px;font-family:'Syne',sans-serif;font-weight:700;font-size:13px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all 0.3s;}
+.btn-submit:hover{background:#fff;transform:translateY(-2px);}
+
+/* FOOTER */
+footer{padding:36px 60px;background:var(--surface);border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+.footer-left{font-size:12px;color:var(--muted);}
+.footer-left span{color:var(--accent);}
+.footer-social{display:flex;gap:12px;}
+.social-btn{width:36px;height:36px;border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;text-decoration:none;color:var(--muted);font-size:13px;font-weight:600;transition:all 0.3s;}
+.social-btn:hover{border-color:var(--accent);color:var(--accent);}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);}}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+.reveal{opacity:0;transform:translateY(40px);transition:opacity 0.7s ease,transform 0.7s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+.reveal-delay-1{transition-delay:0.1s;}
+.reveal-delay-2{transition-delay:0.2s;}
+.reveal-delay-3{transition-delay:0.3s;}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  nav{padding:16px 24px;}
+  .nav-links{gap:18px;}
+  .hero{grid-template-columns:1fr;padding:100px 24px 60px;gap:50px;}
+  .hero-right{order:-1;}
+  .photo-frame{width:280px;height:370px;}
+  section{padding:70px 24px;}
+  .about-grid,.contact-grid{grid-template-columns:1fr;gap:40px;}
+  .projects-grid,.achieve-grid,.edu-grid,.coding-grid{grid-template-columns:1fr;}
+  footer{flex-direction:column;gap:16px;text-align:center;}
+}
+
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--accent);border-radius:2px;}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">AS.</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#coding">Coding</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg-lines"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
+
+  <div class="hero-left">
+    <div class="hero-tag">Open to Opportunities</div>
+    <h1>AMAN<br><span class="name-outline">SHARMA</span></h1>
+    <div class="hero-role">MERN Stack Developer</div>
+    <p class="hero-desc">
+      Final year CSE student at Chitkara University. I build scalable full-stack web applications — clean APIs, real-time systems, and polished UIs. Currently an apprentice at <strong style="color:var(--accent)">Wissen Infotech, Hyderabad</strong>.
+    </p>
+    <div class="hero-cta">
+      <a href="#projects" class="btn-primary">View My Work →</a>
+      <a href="Aman_star.pdf" download class="btn-outline">Download Resume</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <span class="stat-num">200+</span>
+        <span class="stat-label">Problems Solved</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">4</span>
+        <span class="stat-label">Projects Built</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">7.9 </span>
+        <span class="stat-label">CGPA</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- <div class="hero-right">
+    <div class="photo-frame">
+      <img src="assets/final2.jpeg" width="600">
+      <div class="photo-badge">MERN<br>DEV</div>
+    </div> -->
+  <!-- </div> -->
+
+  <div class="hero-right" style="display:flex; justify-content:center;">
+  
+  <div class="photo-frame" 
+       style="width:500px; height:600px; overflow:hidden; border-radius:12px;">
+       
+    <img src="assets/final2.jpeg" 
+         style="width:100%; height:100%; object-fit:cover;">
+    
+    <div class="photo-badge">MERN<br>DEV</div>
+    
+  </div>
+
+</div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="section-label">Who I Am</div>
+  <h2 class="section-title reveal">About Me</h2>
+  <div class="about-grid">
+    <div class="about-img-wrap reveal">
+      
+        <img src="assets/final.jpeg">
+    </div>
+    <div class="about-content">
+      <!-- <p class="about-text reveal">
+        I'm <strong style="color:var(--text)">Aman Sharma</strong>, a passionate full-stack developer in my final year of B.E. Computer Science at Chitkara University, Rajpura, Punjab. I have a deep love for building things on the web — from robust REST APIs to dynamic, responsive UIs that users actually enjoy.
+      </p>
+      <p class="about-text reveal reveal-delay-1">
+        I specialize in the <strong style="color:var(--accent)">MERN stack</strong> with strong foundations in JavaScript, DSA, and system design. I love solving real-world problems with clean, scalable code.
+      </p>
+      <div class="internship-card reveal reveal-delay-2">
+        <h4>Apprentice — Software Developer</h4>
+        <div class="company">Wissen Infotech • Cyber Tower, Hyderabad • 2025 – Present</div>
+        <p>Working on enterprise-grade fintech applications, gaining hands-on experience with scalable backend systems and modern frontend technologies in a professional environment.</p>
+      </div> -->
+
+<p class="about-text reveal">
+  I'm <strong style="color:var(--text)">Aman Sharma</strong>, a final-year B.E. Computer Science student at Chitkara University and currently working as a software development apprentice. I am deeply passionate about building scalable, high-performance applications that create real impact. For me, coding is not just about writing functions — it's about engineering solutions that are efficient, reliable, and user-focused.
+</p>
+
+<p class="about-text reveal reveal-delay-1">
+  Over the years, I have developed strong foundations in <strong style="color:var(--accent)">Data Structures & Algorithms</strong>, system design principles, and full-stack development using the MERN stack. I enjoy designing REST APIs, optimizing database queries, implementing authentication systems, and creating responsive front-end interfaces that deliver seamless user experiences. My projects reflect my focus on scalability, performance optimization, and clean architecture.
+</p>
+
+<p class="about-text reveal reveal-delay-2">
+  Beyond full-stack development, I have hands-on exposure to cloud fundamentals, networking concepts, Linux systems, and modern DevOps practices including Docker and Kubernetes. I believe understanding infrastructure and deployment pipelines is essential to becoming a well-rounded software engineer. I continuously explore how backend systems, cloud environments, and distributed architectures work together in production.
+</p>
+
+<p class="about-text reveal reveal-delay-3">
+  Outside of technology, I am an adrenaline-driven sports enthusiast who plays basketball and football. Sports have shaped my discipline, teamwork, and resilience — qualities that I bring into my engineering journey. Whether it's solving complex DSA problems or building full-scale applications, I approach challenges with intensity, consistency, and a growth mindset.
+</p>
+
+<p class="about-text reveal reveal-delay-4">
+  My goal is to evolve into a software engineer who not only builds applications but architects systems that scale globally. I am always learning, always building, and always pushing my limits.
+</p>
+
+
+
+      <div class="skills-grid reveal reveal-delay-3">
+        <span class="skill-tag">JavaScript</span>
+        <span class="skill-tag">React.js</span>
+        <span class="skill-tag">Node.js</span>
+        <span class="skill-tag">Express.js</span>
+        <span class="skill-tag">MongoDB</span>
+        <span class="skill-tag">MySQL</span>
+        <span class="skill-tag">Redux Toolkit</span>
+        <span class="skill-tag">Socket.IO</span>
+        <span class="skill-tag">REST APIs</span>
+        <span class="skill-tag">JWT / OAuth</span>
+        <span class="skill-tag">Tailwind CSS</span>
+        <span class="skill-tag">Git / GitHub</span>
+        <span class="skill-tag">Java</span>
+        <span class="skill-tag">Postman</span>
+        <span class="skill-tag">Firebase</span>
+        <span class="skill-tag">Cloudinary</span>
+        <span class="skill-tag">Cloud || DevOps</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CODING PROFILES -->
+<section class="coding" id="coding">
+  <div class="section-label">Problem Solving</div>
+  <h2 class="section-title reveal">Coding Profiles</h2>
+  <div class="coding-grid">
+
+    <a href="https://leetcode.com/u/AMAN2004_12/" target="_blank" class="coding-card reveal">
+      <span class="coding-logo">🟡</span>
+      <div class="coding-platform">LeetCode</div>
+      <div class="coding-handle">@aman-sharma</div>
+      <div class="coding-stat"><strong>150+</strong> Problems Solved</div>
+      <span class="coding-arrow">→ View Profile</span>
+    </a>
+
+    <a href="https://www.hackerrank.com/yourprofile" target="_blank" class="coding-card reveal reveal-delay-1">
+      <span class="coding-logo">🟢</span>
+      <div class="coding-platform">HackerRank</div>
+      <div class="coding-handle">@aman-sharma</div>
+      <div class="coding-stat"><strong>DSA</strong> & Problem Solving</div>
+      <span class="coding-arrow">→ View Profile</span>
+    </a>
+
+    <a href="https://github.com/aman12484565ftf" target="_blank" class="coding-card reveal reveal-delay-2">
+      <span class="coding-logo">⚫</span>
+      <div class="coding-platform">GitHub</div>
+      <div class="coding-handle">@aman-sharma</div>
+      <div class="coding-stat"><strong>9+</strong> Repositories</div>
+      <span class="coding-arrow">→ View Profile</span>
+    </a>
+
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section class="projects" id="projects">
+  <div class="section-label">What I've Built</div>
+  <h2 class="section-title reveal">Projects</h2>
+  <div class="projects-grid">
+
+    <div class="project-card reveal">
+      <div class="project-num">01</div>
+      <div class="project-icon">🔗</div>
+      <span class="project-status status-progress">In Progress</span>
+      <h3 class="project-title">Dev Tinder</h3>
+<p class="project-desc">
+DevTinder is a full-stack developer networking platform built using the MERN stack. 
+The idea behind this project was to solve the problem of fragmented tech communities 
+by creating a centralized space where developers can connect, collaborate, and grow together.
+
+Users can create detailed profiles, send and receive smart connection requests, 
+browse a personalized developer feed, and engage in real-time conversations powered by WebSockets. 
+
+On the backend, I implemented secure authentication using JWT, optimized MongoDB 
+with pagination and indexing for faster queries, and designed scalable schemas 
+with proper validation. The platform is built with performance and real-world scalability in mind.
+</p>      <div class="project-tech">
+        <span class="tech-pill">React.js</span>
+        <span class="tech-pill">Node.js</span>
+        <span class="tech-pill">MongoDB</span>
+        <span class="tech-pill">WebSockets</span>
+        <span class="tech-pill">Tailwind CSS</span>
+         <span class="tech-pill">RTK</span>
+        <span class="tech-pill">JWT</span>
+      </div>
+      <div class="project-links">
+        <a href="https://github.com/aman12484565ftf/DevW" class="project-link">GitHub →</a>
+        <a href="#" class="project-link">Live Demo →</a>
+      </div>
+    </div>
+
+<div class="project-card reveal reveal-delay-1">
+
+  <div class="project-num">02</div>
+  <div class="project-icon">🍕</div>
+  <span class="project-status status-live">Live</span>
+
+  <!-- PROJECT IMAGE -->
+  <div style="width:100%; height:200px; overflow:hidden; border-radius:12px; margin-bottom:15px;">
+    <img src="assets/food.png" 
+         style="width:100%; height:100%; object-fit:cover;">
+  </div>
+
+  <h3 class="project-title">Food Ordering Website</h3>
+
+  <p class="project-desc">
+    A responsive food ordering app with full cart functionality — add, remove, 
+    and clear items — and dynamic menu rendering. Integrated Swiggy's live API 
+    for real-time restaurant data. Optimized with lazy loading and custom React hooks.
+  </p>
+
+  <div class="project-tech">
+    <span class="tech-pill">React.js</span>
+    <span class="tech-pill">Redux Toolkit</span>
+    <span class="tech-pill">Swiggy API</span>
+    <span class="tech-pill">Lazy Loading</span>
+    <span class="tech-pill">Custom Hooks</span>
+  </div>
+
+  <div class="project-links">
+    <a href="https://github.com/aman12484565ftf/Frontend" class="project-link">GitHub →</a>
+    <a href="#" class="project-link">Live Demo →</a>
+  </div>
+
+</div>
+
+   <div class="project-card reveal">
+
+  <div class="project-num">03</div>
+  <div class="project-icon">🚚</div>
+  <span class="project-status status-live">Live</span>
+
+  <!-- PROJECT IMAGE -->
+  <div style="width:100%; height:220px; overflow:hidden; border-radius:12px; margin-bottom:15px; box-shadow:0 8px 20px rgba(0,0,0,0.25);">
+    <img src="assets/supply.png"
+         style="width:100%; height:100%; object-fit:cover;">
+  </div>
+
+  <h3 class="project-title">Supply Chain & Logistics</h3>
+
+  <p class="project-desc">
+    End-to-end supply chain management platform with real-time shipment tracking,
+    inventory control, and automated workflows. Built an analytics dashboard with
+    Socket.IO for instant live updates across all connected clients.
+  </p>
+
+  <div class="project-tech">
+    <span class="tech-pill">MERN Stack</span>
+    <span class="tech-pill">Socket.IO</span>
+    <span class="tech-pill">Analytics</span>
+    <span class="tech-pill">REST APIs</span>
+    <span class="tech-pill">Real-time</span>
+  </div>
+
+  <div class="project-links">
+    <a href="https://github.com/aman12484565ftf/supply_-" class="project-link">GitHub →</a>
+    <a href="https://logitrackplus.netlify.app/" class="project-link">Live Demo →</a>
+  </div>
+
+</div>
+
+    <div class="project-card reveal reveal-delay-1">
+      <div class="project-num">04</div>
+      <div class="project-icon">🏠</div>
+      <span class="project-status status-live">Live</span>
+      <h3 class="project-title">Urban Nest</h3>
+      <p class="project-desc">A full-featured real estate platform for property listings with secure JWT authentication, role-based access control, and seamless Cloudinary image uploads. Clean UI with advanced search and filter capabilities.</p>
+      <div class="project-tech">
+        <span class="tech-pill">MERN Stack</span>
+        <span class="tech-pill">JWT Auth</span>
+        <span class="tech-pill">Cloudinary</span>
+        <span class="tech-pill">bcrypt</span>
+        <span class="tech-pill">OAuth</span>
+      </div>
+      <div class="project-links">
+        <a href="https://github.com/aman12484565ftf/urbannest" class="project-link">GitHub →</a>
+        <a href="#" class="project-link">Live Demo →</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ACHIEVEMENTS -->
+<section class="achievements" id="achievements">
+  <div class="section-label">My Numbers</div>
+  <h2 class="section-title reveal">Achievements</h2>
+  <div class="achieve-grid">
+    <div class="achieve-item reveal">
+      <div class="achieve-icon">⚡</div>
+      <span class="achieve-num">200+</span>
+      <div class="achieve-title">Coding Problems Solved</div>
+      <div class="achieve-desc">LeetCode & HackerRank — DSA, dynamic programming, graph algorithms</div>
+    </div>
+    <div class="achieve-item reveal reveal-delay-1">
+      <div class="achieve-icon">🏢</div>
+      <span class="achieve-num">1</span>
+      <div class="achieve-title">Industry Apprenticeship</div>
+      <div class="achieve-desc">Wissen Infotech, Cyber Towers, Hyderabad — enterprise fintech company</div>
+    </div>
+    <div class="achieve-item reveal reveal-delay-2">
+      <div class="achieve-icon">🚀</div>
+      <span class="achieve-num">4</span>
+      <div class="achieve-title">Full-Stack Projects</div>
+      <div class="achieve-desc">MERN stack apps with real-time features, auth, and production-ready code</div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section class="education" id="education">
+  <div class="section-label">Academic Background</div>
+  <h2 class="section-title reveal">Education</h2>
+  <div class="edu-grid">
+    <div class="edu-card reveal">
+      <div class="edu-year">Aug 2022 – Aug 2026</div>
+      <div class="edu-degree">B.E. Computer Science & Engineering</div>
+      <div class="edu-school">Chitkara University, Rajpura, Punjab</div>
+      <span class="edu-grade">CGPA: 7.9</span>
+    </div>
+    <div class="edu-card reveal reveal-delay-1">
+      <div class="edu-year">2020 – 2021</div>
+      <div class="edu-degree">12th Standard (PCM)</div>
+      <div class="edu-school">New Public School, Sector 18-B, Chandigarh</div>
+      <span class="edu-grade">81%</span>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="section-label">Get In Touch</div>
+  <h2 class="section-title reveal">Let's Work<br>Together</h2>
+  <div class="contact-grid">
+    <div class="contact-info reveal">
+      <h3>Open to full-time roles & freelance projects</h3>
+      <p>I'm actively looking for software developer roles. Based in Rajpura, Punjab — open to relocation anywhere in India.</p>
+      <div class="contact-links">
+        <a href="mailto:90152sharmaaman@gmail.com" class="contact-link">
+          <span class="link-icon">✉️</span>
+          <span>90152sharmaaman@gmail.com</span>
+        </a>
+        <a href="tel:+919015284693" class="contact-link">
+          <span class="link-icon">📞</span>
+          <span>+91-9015284693</span>
+        </a>
+        <a href="https://linkedin.com/in/aman-sharma-92b733261" target="_blank" class="contact-link">
+
+
+          <span class="link-icon">💼</span>
+          <span>LinkedIn — Aman Sharma</span>
+        </a>
+        <a href="https://github.com/aman12484565ftf" target="_blank" class="contact-link">
+          <span class="link-icon">🐙</span>
+          <span>GitHub — Aman Sharma</span>
+        </a>
+        <a href="https://leetcode.com/u/AMAN2004_12" target="_blank" class="contact-link">
+          <span class="link-icon">🟡</span>
+          <span>LeetCode — 150+ Problems</span>
+        </a>
+      </div>
+    </div>
+    <div class="contact-form reveal reveal-delay-1">
+      <div class="form-group">
+        <label>Your Name</label>
+        <input type="text" placeholder="John Doe">
+      </div>
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" placeholder="john@company.com">
+      </div>
+      <div class="form-group">
+        <label>Message</label>
+        <textarea placeholder="Tell me about the opportunity..."></textarea>
+      </div>
+      <button class="btn-submit">Send Message →</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-left">© 2026 <span>Aman Sharma</span> — MERN Stack Developer • Chandigarh, Punjab</div>
+  <div class="footer-social">
+    <a href="https://github.com/yourgithub" class="social-btn" target="_blank">GH</a>
+    <a href="https://linkedin.com/in/yourprofile" class="social-btn" target="_blank">IN</a>
+    <a href="https://leetcode.com/u/yourprofile" class="social-btn" target="_blank">LC</a>
+    <a href="mailto:90152sharmaaman@gmail.com" class="social-btn">@</a>
+  </div>
+</footer>
+
+<script>
+// Custom cursor
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',(e)=>{
+  mx=e.clientX; my=e.clientY;
+  cursor.style.left=mx-4+'px';
+  cursor.style.top=my-4+'px';
+});
+function animateRing(){
+  rx+=(mx-rx-16)*0.12;
+  ry+=(my-ry-16)*0.12;
+  ring.style.left=rx+'px';
+  ring.style.top=ry+'px';
+  requestAnimationFrame(animateRing);
+}
+animateRing();
+document.querySelectorAll('a,button,.skill-tag,.coding-card').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cursor.style.transform='scale(3)';ring.style.transform='scale(1.5)';ring.style.opacity='0.2';});
+  el.addEventListener('mouseleave',()=>{cursor.style.transform='scale(1)';ring.style.transform='scale(1)';ring.style.opacity='0.5';});
+});
+
+// Scroll reveal
+const reveals=document.querySelectorAll('.reveal');
+const observer=new IntersectionObserver((entries)=>{
+  entries.forEach((entry)=>{
+    if(entry.isIntersecting){entry.target.classList.add('visible');observer.unobserve(entry.target);}
+  });
+},{threshold:0.1});
+reveals.forEach(el=>observer.observe(el));
+
+// Smooth scroll
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    e.preventDefault();
+    const t=document.querySelector(a.getAttribute('href'));
+    if(t) t.scrollIntoView({behavior:'smooth'});
+  });
+});
+
+// Typing animation in hero
+const roles=['MERN Stack Developer','Full Stack Engineer','React.js Developer','Node.js Developer'];
+let ri=0,ci=0,deleting=false;
+const roleEl=document.querySelector('.hero-role');
+function typeWriter(){
+  const current=roles[ri];
+  if(!deleting){
+    roleEl.textContent=current.slice(0,ci+1);
+    ci++;
+    if(ci===current.length){setTimeout(()=>{deleting=true;typeWriter();},2000);return;}
+  } else {
+    roleEl.textContent=current.slice(0,ci-1);
+    ci--;
+    if(ci===0){deleting=false;ri=(ri+1)%roles.length;}
+  }
+  setTimeout(typeWriter,deleting?50:80);
+}
+typeWriter();
+</script>
+</body>
+</html>
