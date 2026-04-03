@@ -7,12 +7,15 @@ on:
     branches: [main]
 
 jobs:
-  check-html:
+  validate:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Print message
+        run: echo "GitHub Actions is working 🚀"
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -24,3 +27,14 @@ jobs:
 
       - name: Run HTML validation
         run: htmlhint index.html
+
+  build:
+    needs: validate
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build step
+        run: echo "Build successful ✅"
